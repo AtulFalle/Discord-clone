@@ -1,4 +1,7 @@
 import ChatHeader from "@/components/chat/chat-header";
+import ChatInput from "@/components/chat/chat-input";
+import ChatMessages from "@/components/chat/chat-messages";
+import { MediaRoom } from "@/components/media-room";
 import { getOrCreateCOnversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
@@ -10,10 +13,13 @@ interface MemberIdProp {
     params: {
         memberId: string;
         serverId: string
+    },
+    searchParams: {
+        video: boolean
     }
 }
 
-const MemberIDPage = async ({ params }: MemberIdProp) => {
+const MemberIDPage = async ({ params, searchParams }: MemberIdProp) => {
 
     const profile = await currentProfile();
 
@@ -50,7 +56,35 @@ const MemberIDPage = async ({ params }: MemberIdProp) => {
             name={otherMember.profile.name}
             serverId={params.serverId}
             type="conversation"
-        />    </div>);
+        />
+        { searchParams.video && (
+            <MediaRoom
+            chatId={conversation.id}
+            video={true}
+            audio={true} />
+        )}
+        <ChatMessages
+            member={currentMember}
+            name={otherMember.profile.name}
+            chatId={conversation.id}
+            type="conversation"
+            apiUrl="/api/direct-messages"
+            paramKey="conversationId"
+            paramValue={conversation.id}
+            socketUrl="/api/socket/direct-messages"
+            socketQuery={{
+                conversationId: conversation.id
+            }}
+        />
+        <ChatInput
+            name={otherMember.profile.name}
+            type="conversation"
+            apiUrl="/api/socket/direct-messages"
+            query={{
+                conversationId: conversation.id
+            }}
+
+        />   </div>);
 }
 
 export default MemberIDPage;
