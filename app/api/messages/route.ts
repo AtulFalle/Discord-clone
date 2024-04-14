@@ -2,6 +2,7 @@ import { currentProfile } from "@/lib/current-profile"
 import  db from "@/lib/db";
 import { Message } from "@prisma/client";
 import { NextResponse } from "next/server"
+export const dynamic = "force-static";
 
 const MESSAGE_BATCH = 10;
 export async function GET(
@@ -9,7 +10,7 @@ export async function GET(
 ) {
     try {
 
-        const profile = currentProfile();
+        const profile = await currentProfile();
 
         const { searchParams } = new URL(req.url);
         const cursor = searchParams.get('cursor');
