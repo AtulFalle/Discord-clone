@@ -3,17 +3,17 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "mongodb"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Profile {
-  id       String @id @default(uuid())
+  id       String @id @default(uuid()) @map("_id")
   userId   String @unique
   name     String
-  imageUrl String @db.Text
-  email    String @db.Text
+  imageUrl String @db.String
+  email    String @db.String
 
   servers Server[]
 
@@ -24,9 +24,9 @@ model Profile {
 }
 
 model Server {
-  id         String @id @default(uuid())
+  id         String @id @default(uuid()) @map("_id")
   name       String
-  imageUrl   String @db.Text
+  imageUrl   String @db.String
   inviteCode String @unique
 
   profileId String
@@ -47,7 +47,7 @@ enum MemberRole {
 }
 
 model Member {
-  id   String     @id @default(uuid())
+  id   String     @id @default(uuid()) @map("_id")
   role MemberRole @default(GUEST)
 
   profileId String
@@ -70,15 +70,15 @@ model Member {
 }
 
 enum ChannelType {
-  Text
+  String
   Audio
   Video
 }
 
 model Channel {
-  id   String      @id @default(uuid())
+  id   String      @id @default(uuid()) @map("_id")
   name String
-  type ChannelType @default(Text)
+  type ChannelType @default(String)
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -95,10 +95,10 @@ model Channel {
 }
 
 model Message {
-  id      String @id @default(uuid())
-  content String @db.Text
+  id      String @id @default(uuid()) @map("_id")
+  content String @db.String
 
-  fileUrl  String? @db.Text
+  fileUrl  String? @db.String
   memberId String
   member   Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
@@ -115,7 +115,7 @@ model Message {
 }
 
 model Conversation {
-  id String @id @default(uuid())
+  id String @id @default(uuid()) @map("_id")
 
   memberOneId String
   memberOne   Member @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
@@ -131,9 +131,9 @@ model Conversation {
 }
 
 model DirectMessage {
-  id      String  @id @default(uuid())
-  content String  @db.Text
-  fileUrl String? @db.Text
+  id      String  @id @default(uuid()) @map("_id")
+  content String  @db.String
+  fileUrl String? @db.String
 
   memberId String
   member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)

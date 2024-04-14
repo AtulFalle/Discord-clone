@@ -4,7 +4,7 @@ import ChatMessages from "@/components/chat/chat-messages";
 import { MediaRoom } from "@/components/media-room";
 import { getOrCreateCOnversation } from "@/lib/conversation";
 import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db";
+import  db from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 

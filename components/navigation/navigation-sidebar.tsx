@@ -5,7 +5,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import { currentProfile } from "@/lib/current-profile"
-import { db } from "@/lib/db";
+import  db from "@/lib/db";
 
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
